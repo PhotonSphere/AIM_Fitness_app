@@ -1,0 +1,4 @@
+aim_fitness
+*.pyc
+.DS_Store
+.env
