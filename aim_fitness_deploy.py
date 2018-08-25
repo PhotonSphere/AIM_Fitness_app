@@ -7,6 +7,7 @@ import plotly.graph_objs as go
 import base64
 import dash_table_experiments as dt
 from dash.dependencies import Input, Output, State
+from time import sleep
 
 css = [
     'https://cdn.rawgit.com/plotly/dash-app-stylesheets/8485c028c19c393e9ab85e1a4fafd78c489609c2/dash-docs-base.css',
@@ -504,7 +505,27 @@ def wth_callback(click, waist, hip, gender):
 
 
 # Create Input and Ouput callback for insights section
-quest_i = 0
+
+@app.callback(
+        Output('feedback_div', 'children'),
+        [Input('insights_Sub','n_clicks')],
+        [State('i_questions','value')]
+        )
+def insights_callback(click2, response):
+    while response == '':
+        sleep(0.5)
+        
+    global expected_answer
+    if response == expected_answer:
+        return html.P(
+                    '{}: {}'.format('Correct', expected_answer),
+                    style={'backgroundColor':'#ACED76','fontSize':'16px'})
+    else:
+        return html.P(
+                    '{}: {}'.format('Incorrect', expected_answer),
+                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
+    
+
 @app.callback(
         Output('insights_div', 'children'),
         [Input('insights_Q','n_clicks')],
@@ -557,21 +578,7 @@ def insights_next(click1):
 #     else:
 #         return '{}: {}\n{}'.format('incorrect',question['Question'], question['Answer'])
 
-@app.callback(
-        Output('feedback_div', 'children'),
-        [Input('insights_Sub','n_clicks')],
-        [State('i_questions','value')]
-        )
-def insights_callback(click2, response):
-    global expected_answer
-    if response == expected_answer:
-        return html.P(
-                    '{}: {}'.format('Correct',expected_answer),
-                    style={'backgroundColor':'#ACED76','fontSize':'16px'})
-    else:
-        return html.P(
-                    '{}: {}'.format('Incorrect', expected_answer),
-                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
+
 
 # Create Input and Output callbacks for motivation quotes section
 @app.callback(
