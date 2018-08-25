@@ -369,7 +369,14 @@ layout = html.Div([
                     #'margin':'auto',
                     'verticalAlign':'Top'}),
 
-
+            html.Div([
+                html.H6('''
+                    If the answer given through feedback is not in the choices, click "SUBMIT" again. This is a little latency issue.
+                ''', style={'color': 'red'})
+                ], style={#'paddingLeft':90,
+                        'textAlignalign':'center','width':'30%',
+                        #'marginLeft':'340px',
+                        'margin':'auto','color':'#F1948A'}),
 
                 # create div to start insights questions, aligned to left
                 # display the question
@@ -506,24 +513,7 @@ def wth_callback(click, waist, hip, gender):
 
 # Create Input and Ouput callback for insights section
 
-@app.callback(
-        Output('feedback_div', 'children'),
-        [Input('insights_Sub','n_clicks')],
-        [State('i_questions','value')]
-        )
-def insights_callback(click2, response):
-    while response == '':
-        sleep(0.5)
-        
-    global expected_answer
-    if response == expected_answer:
-        return html.P(
-                    '{}: {}'.format('Correct', expected_answer),
-                    style={'backgroundColor':'#ACED76','fontSize':'16px'})
-    else:
-        return html.P(
-                    '{}: {}'.format('Incorrect', expected_answer),
-                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
+
     
 
 @app.callback(
@@ -577,6 +567,25 @@ def insights_next(click1):
 #         return '{}: {}\n{}'.format('correct',question['Question'], question['Answer'])
 #     else:
 #         return '{}: {}\n{}'.format('incorrect',question['Question'], question['Answer'])
+
+@app.callback(
+        Output('feedback_div', 'children'),
+        [Input('insights_Sub','n_clicks')],
+        [State('i_questions','value')]
+        )
+def insights_callback(click2, response):
+    while response == '':
+        sleep(0.5)
+        
+    global expected_answer
+    if response == expected_answer:
+        return html.P(
+                    '{}: {}'.format('Correct', expected_answer),
+                    style={'backgroundColor':'#ACED76','fontSize':'16px'})
+    else:
+        return html.P(
+                    '{}: {}'.format('Incorrect', expected_answer),
+                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
 
 
 
