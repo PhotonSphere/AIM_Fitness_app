@@ -38,7 +38,8 @@ d_dict = {}
 m_dict = {}
 
 # the correct answers list variable to provide feedback
-expected_answer = ['First insight: Never skip your Breakfast. "Now check the correct answer and click SUBMIT, then NEXT for more questions"']
+#expected_answer = ['First insight: Never skip your Breakfast. "Now check the correct answer and click SUBMIT, then NEXT for more questions"']
+expected_answer = 'First insight: Never skip your Breakfast. "Now check the correct answer and click SUBMIT, then NEXT for more questions"'
 
 click1_count = 0
 click2_count = 0
@@ -528,7 +529,8 @@ def insights_next(click1):
     Q_label = question['Question']
     choices = [question['Answer'], question['W1'], question['W2']]
     global expected_answer
-    expected_answer.append(question['Answer'])
+    expected_answer = question['Answer']
+    #expected_answer.append(question['Answer'])
     #choice_2 = question['W1']
     #choice_3 = question['W2']
     choices = np.random.choice(choices, 3, replace=False)
@@ -562,13 +564,13 @@ def insights_next(click1):
         )
 def insights_callback(click2, response):
     global expected_answer
-    if response == expected_answer[-1]:
+    if response == expected_answer:
         return html.P(
-                    '{}: {}'.format('Correct',expected_answer[-1]),
+                    '{}: {}'.format('Correct',expected_answer),
                     style={'backgroundColor':'#ACED76','fontSize':'16px'})
     else:
         return html.P(
-                    '{}: {}'.format('Incorrect', expected_answer[-1]),
+                    '{}: {}'.format('Incorrect', expected_answer),
                     style={'backgroundColor':'#F87C6F','fontSize':'16px'})
 
 # Create Input and Output callbacks for motivation quotes section
