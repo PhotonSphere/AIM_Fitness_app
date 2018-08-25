@@ -38,18 +38,23 @@ d_dict = {}
 m_dict = {}
 
 # the correct answers list variable to provide feedback
-expected_answer = ['First insight: Never skip your Breakfast. - click next to start']
+expected_answer = ['First insight: Never skip your Breakfast. "Now check the correct answer and click SUBMIT, then NEXT for more questions"']
 
 click1_count = 0
 click2_count = 0
 
 # making a dict for questions and quotes
 for i in range(len(data)):
-	d_dict[i]= data.iloc[i]
+	#d_dict[i]= data.iloc[i]
 	m_dict[i]= data.iloc[i]['Motivation']
 
+question_df = data[['Question','Answer','W1','W2']].dropna()
+for i in range(len(question_df)):
+	d_dict[i] = question_df.iloc[i]
+
 # randomizing the question order
-num_of_ques = int(data.iloc[0]['NQ'])
+#num_of_ques = int(data.iloc[0]['NQ'])
+num_of_ques = len(data['Question'].dropna())
 question_nums = list(range(num_of_ques))
 question_order = np.random.choice(question_nums, num_of_ques, replace=False)
 question_index = 0
@@ -161,7 +166,6 @@ WTH_df = pd.DataFrame({'Female':['0.80 or lower','0.81 to 0.84','0.85 or higher'
 # )
 
 app = dash.Dash()
-server = app.server
 
 #app.config['suppress_callback_exceptions']=True
 app.title = 'AIM Fitness'
@@ -172,22 +176,23 @@ layout = html.Div([
 
             # create visual title
 
-            html.Div([html.H1('Awareness ---> Insights ---> Motivation'),
-                     html.H3('AIM for good health')],
+            html.Div([html.H3('Awareness --> Insights --> Motivation'),
+                     html.H5('AIM for good health')],
                      className='content-container container-width', style={'textAlign':'center', 'backgroundColor':'#9999FF'}),
 
             #html.Div(style={'width':'25%','display':'inline-block'}),
 
-            html.Div([html.H2('Awareness of health level')],
+            html.Div([html.H3('Awareness of health level')],
                     #className='content-container container-width',
-                    style={'textAlign':'center', 'backgroundColor':'grey','width':'30%',
-                            'marginLeft':'460px'}),
+                    style={'textAlign':'center', 'backgroundColor':'#76D7C4','width':'30%',
+                            #'marginLeft':'460px',
+                            'margin':'auto'}),
 
-            html.Div([],style={'width':'5%','display':'inline-block'}),
+            #html.Div([],style={'width':'5%','display':'inline-block'}),
 
             # create div to caputre inputs for BMI calculation, aligned left
             html.Div([
-                    html.H3('BMI Calculator'),
+                    html.H4('BMI Calculator'),
                     html.P([
                         html.Label('Weight (Kgs)'),
                         dcc.Input(
@@ -237,7 +242,7 @@ layout = html.Div([
 
             # create div to capture inputs for Hip-Waist ratio calculation,
             html.Div([
-                    html.H3('Waist to Hip ratio'),
+                    html.H4('Waist to Hip ratio'),
                     #html.P('2.54 cms = 1 Inch'),
                     html.P([
                         html.Label('Waist (Inch)'),
@@ -298,16 +303,20 @@ layout = html.Div([
                 containerProps={'style':{'maxwidth':'300px','textAlign':'center'}})]),
 
             # Create a section for Insights questions
-            html.Div([html.H2('Insights section')],
+            html.Div([html.H3('Insights section')],
                     #className='content-container container-width',
-                    style={'textAlign':'center', 'backgroundColor':'grey','width':'30%',
-                            'marginLeft':'460px'}),
+                    style={'textAlign':'center', 'backgroundColor':'#76D7C4','width':'30%',
+                            #'marginLeft':'460px',
+                            'margin':'auto'}),
 
             html.Div([
                 html.H6('''
                     Answer these questions and check your knowledge, reinforce/gain information.
                 ''')
-                ], style={'paddingLeft':90, 'align':'center','width':'50%','marginLeft':'340px'}),
+                ], style={#'paddingLeft':90,
+                        'textAlignalign':'center','width':'30%',
+                        #'marginLeft':'340px',
+                        'margin':'auto','fontColor':'#F1948A'}),
 
             html.Div(id='insights_div',
                 children = [#'Click "NEXT" to get started!'
@@ -317,27 +326,19 @@ layout = html.Div([
                 dcc.RadioItems(
                     id='i_questions',
                     options=[{'label': 'Yes', 'value': 'Yes'},
-                             {'label': 'No', 'value': 'First insight: Never skip your Breakfast. - click next to start'},
+                             {'label': 'No', 'value': 'First insight: Never skip your Breakfast. "Now check the correct answer and click SUBMIT, then NEXT for more questions"'},
                              {'label': 'Maybe if busy', 'value': 'Maybe if busy'}],
-                    value="First insight: Never skip your Breakfast. - click next to start"
+                    value='First insight: Never skip your Breakfast. "Now check the correct answer and click SUBMIT, then NEXT for more questions"'
                 )
                 ],
-                style={'width': '500px', 'margin-right': '10px',
-                        'margin-left': '10px', 'text-align': 'left', 'marginLeft':'420px'}),
+                style={'width': '500px', 'paddingLeft':'5px',
+                #'margin-right': '10px', 'margin-left': '10px', 'marginLeft':'420px',
+                'text-align': 'left', 'margin':'auto', 'backgroundColor':'#F2D7D5'}),
 
             html.Div(id='feedback_div',
-                    style={'width': '500px', 'margin-right': '10px',
-                    'margin-left': '10px', 'text-align': 'left', 'marginLeft':'420px'}),
-
-            html.Div(
-            html.P([
-            html.Button(
-                id='insights_Q',
-                n_clicks=0,
-                children='Next',
-                style={'fontSize':20}
-            )],style={ 'width':'10%'})
-            , style={'display':'inline-block', 'width':'17%', 'marginLeft':'440px', 'verticalAlign':'Top'}),
+                    style={'width': '500px',
+                    #'margin-right': '10px', 'margin-left': '10px', 'marginLeft':'420px',
+                    'text-align': 'left', 'margin':'auto'}),
 
             html.Div(
             html.P([
@@ -347,7 +348,25 @@ layout = html.Div([
                 children='Submit',
                 style={'fontSize':20}
             )],style={ 'width':'10%'})
-            , style={'display':'inline-block', 'width':'17%', 'marginLeft':'20px', 'verticalAlign':'Top'}),
+            , style={'display':'inline-block', 'width':'17%',
+                    'marginLeft':'430px',
+                    #'margin':'auto',
+                    'verticalAlign':'Top'}),
+
+            html.Div(
+            html.P([
+            html.Button(
+                id='insights_Q',
+                n_clicks=0,
+                children='Next',
+                style={'fontSize':20}
+            )],style={ 'width':'10%'})
+            , style={'display':'inline-block', 'width':'17%',
+                    'marginLeft':'10px',
+                    #'margin':'auto',
+                    'verticalAlign':'Top'}),
+
+
 
                 # create div to start insights questions, aligned to left
                 # display the question
@@ -364,19 +383,26 @@ layout = html.Div([
                 '''.replace('  ',''), className='container',
                 containerProps={'style':{'maxwidth':'300px','textAlign':'center'}})]),
 
-            html.Div([html.H2('Motivation section')],
+            html.Div([html.H3('Motivation section')],
                     #className='content-container container-width',
-                    style={'textAlign':'center', 'backgroundColor':'grey','width':'30%',
-                            'marginLeft':'460px'}),
+                    style={'textAlign':'center', 'backgroundColor':'#76D7C4','width':'30%',
+                            #'marginLeft':'460px',
+                            'margin':'auto'}),
 
             html.Div([
                 html.H6('''
                     Here are the motivation quotes which will provide the inspiration to get you started/keep going on the health mission
                 ''')
-                ], style={'paddingLeft':90, 'textAlignalign':'center','width':'50%','marginLeft':'260px'}),
+                ], style={#'paddingLeft':90,
+                        'textAlignalign':'center','width':'50%',
+                        #'marginLeft':'260px'
+                        'margin':'auto', 'fontColor':'#F1948A'}),
 
             html.Div(id='mot_div',
-                     style={'paddingLeft':90, 'textAlignalign':'center','width':'60%','marginLeft':'270px'}
+                     style={#'paddingLeft':90,
+                        'textAlignalign':'center','width':'60%',
+                        #'marginLeft':'270px'
+                        'margin':'auto'}
                      ),
 
             html.Div([
@@ -387,7 +413,11 @@ layout = html.Div([
                 children='Next',
                 style={'fontSize':20}
             )],style={ 'width':'10%'})
-            ], style={'display':'inline-block', 'width':'17%', 'marginLeft':'580px', 'verticalAlign':'Top'}),
+            ], style={'display':'inline-block', 'width':'17%',
+                    'marginLeft':'580px',
+                    'marginTop':'10px',
+                    #'margin':'auto',
+                    'verticalAlign':'Top'}),
                 # Create div to display the quotes
                     # create next button to call next quote
 
@@ -472,7 +502,7 @@ def wth_callback(click, waist, hip, gender):
 
 
 # Create Input and Ouput callback for insights section
-
+quest_i = 0
 @app.callback(
         Output('insights_div', 'children'),
         [Input('insights_Q','n_clicks')],
@@ -482,15 +512,17 @@ def insights_next(click1):
 
     if d_dict == {}:
         return "Great going! you have completed all the questions. Come back later! for more....."
-    ran = np.random.randint(len(data))
-    while True:
-        if ran in questions_count:
-            ran = np.random.randint(len(data))
-            #continue
-        else:
-            break
-    question = d_dict.pop(ran)
-    questions_count.append(ran)
+    # ran = np.random.randint(len(data))
+    # while True:
+    #     if ran in questions_count:
+    #         ran = np.random.randint(len(data))
+    #         #continue
+    #     else:
+    #         break
+    global question_index
+    question = d_dict.pop(question_order[question_index])
+    #questions_count.append(ran)
+    question_index += 1
 
     Q_label = question['Question']
     choices = [question['Answer'], question['W1'], question['W2']]
@@ -543,7 +575,12 @@ def insights_callback(click2, response):
         )
 def motivation_callback(click):
     if m_dict == {}:
-        return 'Great going! You have completed all the available quotes. Come back later! for more.....'
+        return html.P('Great going! You have completed all the available quotes. Come back later! for more.....',
+        style={#'paddingLeft':90,
+            'backgroundColor': '#F2D7D5',
+            'textAlign':'center','width':'60%',
+            'margin':'auto', 'paddingDown':'10'#'marginLeft':'260px'
+        })
     while True:
     	ran = np.random.randint(len(data))
     	if ran in mot_count:
@@ -551,8 +588,11 @@ def motivation_callback(click):
     	else:
             quote = m_dict.pop(ran)
             mot_count.append(ran)
-            return html.H3(quote,
-                        style={'paddingLeft':90, 'backgroundColor': '#B4E1FA', 'textAlignalign':'center','width':'60%',#'marginLeft':'260px'
+            return html.H4(quote,
+                        style={#'paddingLeft':90,
+                            'backgroundColor': '#F2D7D5',
+                            'textAlign':'center','width':'60%',
+                            'margin':'auto', 'paddingDown':'10'#'marginLeft':'260px'
                         })
 
 
