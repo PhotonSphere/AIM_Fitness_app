@@ -527,6 +527,7 @@ def insights_next(click1):
 
     Q_label = question['Question']
     choices = [question['Answer'], question['W1'], question['W2']]
+    global expected_answer
     expected_answer.append(question['Answer'])
     #choice_2 = question['W1']
     #choice_3 = question['W2']
