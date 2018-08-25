@@ -371,7 +371,8 @@ layout = html.Div([
 
             html.Div([
                 html.H6('''
-                    If the answer given through feedback is not in the choices, click "SUBMIT" again. This is a little latency issue.
+                    If the answer given through feedback is not in the choices, click "SUBMIT" again. This is a little (10 Sec)
+                    latency/delay issue.
                 ''', style={'color': 'red'})
                 ], style={#'paddingLeft':90,
                         'textAlignalign':'center','width':'30%',
@@ -430,9 +431,31 @@ layout = html.Div([
                     'verticalAlign':'Top'}),
                 # Create div to display the quotes
                     # create next button to call next quote
-
-
+            html.Div([
+                dcc.Markdown('''
+                    ***
+                '''.replace('  ',''), className='container',
+                containerProps={'style':{'maxwidth':'300px','textAlign':'center'}})]),
+    
             # Create div to give ending words towards the AIM for health
+            html.Div([
+                html.H6('''
+                    Now that you are Aware of your health level and you have gained some insights by taking the questions given in the Insights section, and so you
+                    have read the Motivation quotes.
+                ''', style={'color':'#2980B9'}),
+                html.H6('''
+                    Hopefully this helped to set an AIM to improve/continue your fitness efforts. If you got satisfactory results using the Awareness section keep that
+                    up, if not, nobody is stoping you from becoming fit.... So don't stop yourself.
+                ''', style={'color':'#2980B9'})
+                ], style={'paddingLeft':10,
+                        'textAlignalign':'center','width':'50%',
+                        #'marginLeft':'260px'
+                        'margin':'auto', 'fontColor':'#2980B9', 'borderStyle':'dotted'}),
+            html.Div([
+                dcc.Markdown('''
+                    ***
+                '''.replace('  ',''), className='container',
+                containerProps={'style':{'maxwidth':'300px','textAlign':'center'}})]),
 ])
 
 # assinging layout to app
