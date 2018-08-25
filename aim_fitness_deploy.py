@@ -166,6 +166,7 @@ WTH_df = pd.DataFrame({'Female':['0.80 or lower','0.81 to 0.84','0.85 or higher'
 # )
 
 app = dash.Dash()
+server = app.server
 
 #app.config['suppress_callback_exceptions']=True
 app.title = 'AIM Fitness'
