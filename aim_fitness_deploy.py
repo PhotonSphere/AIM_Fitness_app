@@ -561,6 +561,7 @@ def insights_next(click1):
         [State('i_questions','value')]
         )
 def insights_callback(click2, response):
+    global expected_answer
     if response == expected_answer[-1]:
         return html.P(
                     '{}: {}'.format('Correct',expected_answer[-1]),
@@ -568,7 +569,7 @@ def insights_callback(click2, response):
     else:
         return html.P(
                     '{}: {}'.format('Incorrect', expected_answer[-1]),
-                    style={'backgroundColor':'#F87C6F'})
+                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
 
 # Create Input and Output callbacks for motivation quotes section
 @app.callback(
