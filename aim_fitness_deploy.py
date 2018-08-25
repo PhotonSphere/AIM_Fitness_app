@@ -431,6 +431,15 @@ layout = html.Div([
                 # Create div to display the quotes
                     # create next button to call next quote
 
+            html.Div([
+                dcc.Interval(id='interval-component',
+                             interval=100,
+                             n_intervals=0),
+                html.P(id='variable')
+                ], style={'paddingLeft':5, 'width': '10%', 'display': 'inline-block',
+                          'contentAlign':'right'}
+            )
+
             # Create div to give ending words towards the AIM for health
 ])
 
@@ -561,6 +570,16 @@ def insights_next(click1):
     ))
 
     return next_question
+
+
+@app.callback(
+    Output('variable', 'children'),
+    [Input('interval-component', 'n_intervals')])
+def callback_variable(hoverData):
+    global expected_answer
+    return ''
+    
+
 
 # def insights_sub(c1, click2, response):
 #     if response == question['Answer']:
