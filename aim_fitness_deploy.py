@@ -316,7 +316,7 @@ layout = html.Div([
                 html.H6('''
                     Answer these questions and check your knowledge, reinforce/gain information.
                 '''),
-                html.H6('''Answer will appear in 15 seconds after the question appears''',style={'color': 'red'})
+                html.H6('''Answer will appear in 9 seconds after the question appears''',style={'color': 'red'})
                 ], style={#'paddingLeft':90,
                         'textAlignalign':'center','width':'30%',
                         #'marginLeft':'340px',
@@ -340,7 +340,7 @@ layout = html.Div([
                 'text-align': 'left', 'margin':'auto', 'backgroundColor':'#F2D7D5'}),
 
             html.Div(dcc.Interval(id='interval-component',
-                interval=15000,
+                interval= 9000,
                 n_intervals=0)),
 
             html.Div(id='feedback_div',
@@ -376,7 +376,7 @@ layout = html.Div([
 
             html.Div([
                 html.H6('''
-                    If the answer given through feedback is not in the choices, correct answer will appear shortly. This is a little (10 Sec)
+                    If the answer given through feedback is not in the choices, correct answer will appear shortly. This is a little (5 Sec)
                     latency/delay issue.
                 ''', style={'color': 'red'})
                 ], style={#'paddingLeft':90,
