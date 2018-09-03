@@ -315,7 +315,8 @@ layout = html.Div([
             html.Div([
                 html.H6('''
                     Answer these questions and check your knowledge, reinforce/gain information.
-                ''')
+                '''),
+                html.H6('''Answer will appear in 15 seconds after the question appears''',style={'color': 'red'})
                 ], style={#'paddingLeft':90,
                         'textAlignalign':'center','width':'30%',
                         #'marginLeft':'340px',
@@ -338,23 +339,27 @@ layout = html.Div([
                 #'margin-right': '10px', 'margin-left': '10px', 'marginLeft':'420px',
                 'text-align': 'left', 'margin':'auto', 'backgroundColor':'#F2D7D5'}),
 
+            html.Div(dcc.Interval(id='interval-component',
+                interval=15000,
+                n_intervals=0)),
+
             html.Div(id='feedback_div',
                     style={'width': '500px',
                     #'margin-right': '10px', 'margin-left': '10px', 'marginLeft':'420px',
                     'text-align': 'left', 'margin':'auto'}),
-
-            html.Div(
-            html.P([
-            html.Button(
-                id='insights_Sub',
-                n_clicks=0,
-                children='Submit',
-                style={'fontSize':20}
-            )],style={ 'width':'10%'})
-            , style={'display':'inline-block', 'width':'17%',
-                    'marginLeft':'430px',
-                    #'margin':'auto',
-                    'verticalAlign':'Top'}),
+##
+##            html.Div(
+##            html.P([
+##            html.Button(
+##                id='insights_Sub',
+##                n_clicks=0,
+##                children='Submit',
+##                style={'fontSize':20}
+##            )],style={ 'width':'10%'})
+##            , style={'display':'inline-block', 'width':'17%',
+##                    'marginLeft':'430px',
+##                    #'margin':'auto',
+##                    'verticalAlign':'Top'}),
 
             html.Div(
             html.P([
@@ -365,13 +370,13 @@ layout = html.Div([
                 style={'fontSize':20}
             )],style={ 'width':'10%'})
             , style={'display':'inline-block', 'width':'17%',
-                    'marginLeft':'10px',
+                    'marginLeft':'580px',
                     #'margin':'auto',
                     'verticalAlign':'Top'}),
 
             html.Div([
                 html.H6('''
-                    If the answer given through feedback is not in the choices, click "SUBMIT" again. This is a little (10 Sec)
+                    If the answer given through feedback is not in the choices, correct answer will appear shortly. This is a little (10 Sec)
                     latency/delay issue.
                 ''', style={'color': 'red'})
                 ], style={#'paddingLeft':90,
@@ -596,22 +601,31 @@ def insights_next(click1):
 
 @app.callback(
         Output('feedback_div', 'children'),
-        [Input('insights_Sub','n_clicks')],
-        [State('i_questions','value')]
+        [Input('interval-component','n_intervals')]
         )
-def insights_callback(click2, response):
-    while response == '':
-        sleep(0.5)
-        
-    global expected_answer
-    if response == expected_answer:
-        return html.P(
-                    '{}: {}'.format('Correct', expected_answer),
-                    style={'backgroundColor':'#ACED76','fontSize':'16px'})
-    else:
-        return html.P(
-                    '{}: {}'.format('Incorrect', expected_answer),
-                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
+def insights_interval(interval):
+    return html.P(
+                '{}: {}'.format('Answer',expected_answer),
+                style={'backgroundColor':'#ACED76','fontSize':'16px'})
+
+##@app.callback(
+##        Output('feedback_div', 'children'),
+##        [Input('insights_Sub','n_clicks')],
+##        [State('i_questions','value')]
+##        )
+##def insights_callback(click2, response):
+##    while response == '':
+##        sleep(0.5)
+##        
+##    global expected_answer
+##    if response == expected_answer:
+##        return html.P(
+##                    '{}: {}'.format('Correct', expected_answer),
+##                    style={'backgroundColor':'#ACED76','fontSize':'16px'})
+##    else:
+##        return html.P(
+##                    '{}: {}'.format('Incorrect', expected_answer),
+##                    style={'backgroundColor':'#F87C6F','fontSize':'16px'})
 
 
 
